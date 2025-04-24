@@ -1,28 +1,42 @@
 package com.example.Parcial2Arq.Model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "entrenador")
 public class Entrenador {
 
-    private int id_entrenador;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_entrenador")
+    private Long idEntrenador;
+
+    @Column(name = "nombre", length = 100, nullable = false)
     private String nombre;
-    private String especilidad;
-    private int id_equipo;
+
+    @Column(name = "especialidad", length = 100, nullable = false)
+    private String especialidad;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_equipo", nullable = false)
+    private Equipo equipo;
 
     public Entrenador() {
     }
 
-    public Entrenador(int id_entrenador, String nombre, String especilidad, int id_equipo) {
-        this.id_entrenador = id_entrenador;
+    public Entrenador(Long idEntrenador, String nombre, String especialidad, Equipo equipo) {
+        this.idEntrenador = idEntrenador;
         this.nombre = nombre;
-        this.especilidad = especilidad;
-        this.id_equipo = id_equipo;
+        this.especialidad = especialidad;
+        this.equipo = equipo;
     }
 
-    public int getId_entrenador() {
-        return id_entrenador;
+    public Long getIdEntrenador() {
+        return idEntrenador;
     }
 
-    public void setId_entrenador(int id_entrenador) {
-        this.id_entrenador = id_entrenador;
+    public void setIdEntrenador(Long idEntrenador) {
+        this.idEntrenador = idEntrenador;
     }
 
     public String getNombre() {
@@ -33,29 +47,19 @@ public class Entrenador {
         this.nombre = nombre;
     }
 
-    public String getEspecilidad() {
-        return especilidad;
+    public String getEspecialidad() {
+        return especialidad;
     }
 
-    public void setEspecilidad(String especilidad) {
-        this.especilidad = especilidad;
+    public void setEspecialidad(String especialidad) {
+        this.especialidad = especialidad;
     }
 
-    public int getId_equipo() {
-        return id_equipo;
+    public Equipo getEquipo() {
+        return equipo;
     }
 
-    public void setId_equipo(int id_equipo) {
-        this.id_equipo = id_equipo;
-    }
-
-    @Override
-    public String toString() {
-        return "Entrenador{" +
-                "id_entrenador=" + id_entrenador +
-                ", nombre='" + nombre + '\'' +
-                ", especilidad='" + especilidad + '\'' +
-                ", id_equipo=" + id_equipo +
-                '}';
+    public void setEquipo(Equipo equipo) {
+        this.equipo = equipo;
     }
 }

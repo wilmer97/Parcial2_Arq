@@ -1,36 +1,61 @@
 package com.example.Parcial2Arq.Model;
 
-import java.time.LocalDate;
+import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
+@Entity
+@Table(name = "partido")
 public class Partido {
 
-    private int id_partido;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idPartido;
+
+    @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
+
+    @Column(name = "estadio", length = 100, nullable = false)
     private String estadio;
-    private int eqp_local;
-    private int eqo_visita;
-    private int gol_local;
-    private int gol_visita;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "equipo_local", nullable = false)
+    private Equipo equipoLocal;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "equipo_visita", nullable = false)
+    private Equipo equipoVisita;
+
+    @Column(name = "goles_local", nullable = false)
+    private Integer golesLocal = 0;
+
+    @Column(name = "goles_visita", nullable = false)
+    private Integer golesVisita = 0;
+
+    @OneToMany(mappedBy = "partido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EstadisticasJugador> estadisticas;
 
     public Partido() {
     }
 
-    public Partido(int id_partido, LocalDate fecha, String estadio, int eqp_local, int eqo_visita, int gol_local, int gol_visita) {
-        this.id_partido = id_partido;
+    public Partido(Long idPartido, LocalDate fecha, String estadio, Equipo equipoLocal, Equipo equipoVisita, Integer golesLocal, Integer golesVisita, List<EstadisticasJugador> estadisticas) {
+        this.idPartido = idPartido;
         this.fecha = fecha;
         this.estadio = estadio;
-        this.eqp_local = eqp_local;
-        this.eqo_visita = eqo_visita;
-        this.gol_local = gol_local;
-        this.gol_visita = gol_visita;
+        this.equipoLocal = equipoLocal;
+        this.equipoVisita = equipoVisita;
+        this.golesLocal = golesLocal;
+        this.golesVisita = golesVisita;
+        this.estadisticas = estadisticas;
     }
 
-    public int getId_partido() {
-        return id_partido;
+    public Long getIdPartido() {
+        return idPartido;
     }
 
-    public void setId_partido(int id_partido) {
-        this.id_partido = id_partido;
+    public void setIdPartido(Long idPartido) {
+        this.idPartido = idPartido;
     }
 
     public LocalDate getFecha() {
@@ -49,48 +74,43 @@ public class Partido {
         this.estadio = estadio;
     }
 
-    public int getEqp_local() {
-        return eqp_local;
+    public Equipo getEquipoLocal() {
+        return equipoLocal;
     }
 
-    public void setEqp_local(int eqp_local) {
-        this.eqp_local = eqp_local;
+    public void setEquipoLocal(Equipo equipoLocal) {
+        this.equipoLocal = equipoLocal;
     }
 
-    public int getEqo_visita() {
-        return eqo_visita;
+    public Equipo getEquipoVisita() {
+        return equipoVisita;
     }
 
-    public void setEqo_visita(int eqo_visita) {
-        this.eqo_visita = eqo_visita;
+    public void setEquipoVisita(Equipo equipoVisita) {
+        this.equipoVisita = equipoVisita;
     }
 
-    public int getGol_local() {
-        return gol_local;
+    public Integer getGolesLocal() {
+        return golesLocal;
     }
 
-    public void setGol_local(int gol_local) {
-        this.gol_local = gol_local;
+    public void setGolesLocal(Integer golesLocal) {
+        this.golesLocal = golesLocal;
     }
 
-    public int getGol_visita() {
-        return gol_visita;
+    public Integer getGolesVisita() {
+        return golesVisita;
     }
 
-    public void setGol_visita(int gol_visita) {
-        this.gol_visita = gol_visita;
+    public void setGolesVisita(Integer golesVisita) {
+        this.golesVisita = golesVisita;
     }
 
-    @Override
-    public String toString() {
-        return "Partido{" +
-                "id_partido=" + id_partido +
-                ", fecha=" + fecha +
-                ", estadio='" + estadio + '\'' +
-                ", eqp_local=" + eqp_local +
-                ", eqo_visita=" + eqo_visita +
-                ", gol_local=" + gol_local +
-                ", gol_visita=" + gol_visita +
-                '}';
+    public List<EstadisticasJugador> getEstadisticas() {
+        return estadisticas;
+    }
+
+    public void setEstadisticas(List<EstadisticasJugador> estadisticas) {
+        this.estadisticas = estadisticas;
     }
 }

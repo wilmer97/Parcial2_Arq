@@ -1,36 +1,60 @@
 package com.example.Parcial2Arq.Model;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
+@Entity
+@Table(name = "jugador")
 public class Jugador {
 
-    private int id_jugador;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_jugador")
+    private Long idJugador;
+
+    @Column(name = "nombre", length = 100, nullable = false)
     private String nombre;
+
+    @Column(name = "posicion", length = 50, nullable = false)
     private String posicion;
-    private String dorsal;
-    private LocalDate fecha_nac;
+
+    @Column(name = "dorsal", nullable = false)
+    private Integer dorsal;
+
+    @Column(name = "fecha_nac", nullable = false)
+    private LocalDate fechaNac;
+
+    @Column(name = "nacionalidad", length = 100, nullable = false)
     private String nacionalidad;
-    private int id_equipo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_equipo", nullable = false)
+    private Equipo equipo;
+
+    @OneToMany(mappedBy = "jugador", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EstadisticasJugador> estadisticas;
 
     public Jugador() {
     }
 
-    public Jugador(int id_jugador, String nombre, String posicion, String dorsal, LocalDate fecha_nac, String nacionalidad, int id_equipo) {
-        this.id_jugador = id_jugador;
+    public Jugador(Long idJugador, String nombre, String posicion, Integer dorsal, LocalDate fechaNac, String nacionalidad, Equipo equipo, List<EstadisticasJugador> estadisticas) {
+        this.idJugador = idJugador;
         this.nombre = nombre;
         this.posicion = posicion;
         this.dorsal = dorsal;
-        this.fecha_nac = fecha_nac;
+        this.fechaNac = fechaNac;
         this.nacionalidad = nacionalidad;
-        this.id_equipo = id_equipo;
+        this.equipo = equipo;
+        this.estadisticas = estadisticas;
     }
 
-    public int getId_jugador() {
-        return id_jugador;
+    public Long getIdJugador() {
+        return idJugador;
     }
 
-    public void setId_jugador(int id_jugador) {
-        this.id_jugador = id_jugador;
+    public void setIdJugador(Long idJugador) {
+        this.idJugador = idJugador;
     }
 
     public String getNombre() {
@@ -49,20 +73,20 @@ public class Jugador {
         this.posicion = posicion;
     }
 
-    public String getDorsal() {
+    public Integer getDorsal() {
         return dorsal;
     }
 
-    public void setDorsal(String dorsal) {
+    public void setDorsal(Integer dorsal) {
         this.dorsal = dorsal;
     }
 
-    public LocalDate getFecha_nac() {
-        return fecha_nac;
+    public LocalDate getFechaNac() {
+        return fechaNac;
     }
 
-    public void setFecha_nac(LocalDate fecha_nac) {
-        this.fecha_nac = fecha_nac;
+    public void setFechaNac(LocalDate fechaNac) {
+        this.fechaNac = fechaNac;
     }
 
     public String getNacionalidad() {
@@ -73,24 +97,19 @@ public class Jugador {
         this.nacionalidad = nacionalidad;
     }
 
-    public int getId_equipo() {
-        return id_equipo;
+    public Equipo getEquipo() {
+        return equipo;
     }
 
-    public void setId_equipo(int id_equipo) {
-        this.id_equipo = id_equipo;
+    public void setEquipo(Equipo equipo) {
+        this.equipo = equipo;
     }
 
-    @Override
-    public String toString() {
-        return "Jugador{" +
-                "id_jugador=" + id_jugador +
-                ", nombre='" + nombre + '\'' +
-                ", posicion='" + posicion + '\'' +
-                ", dorsal='" + dorsal + '\'' +
-                ", fecha_nac=" + fecha_nac +
-                ", nacionalidad='" + nacionalidad + '\'' +
-                ", id_equipo=" + id_equipo +
-                '}';
+    public List<EstadisticasJugador> getEstadisticas() {
+        return estadisticas;
+    }
+
+    public void setEstadisticas(List<EstadisticasJugador> estadisticas) {
+        this.estadisticas = estadisticas;
     }
 }
